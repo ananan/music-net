@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Peter's Music Box</title>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+        <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/music.png') }}">
+
+    <style> .col-center-block {float:none; display:block; margin-left:auto; margin-right:auto;} </style>
+
+</head>
+<body>
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="navabar-header">
+            <a class="navbar-brand" href="{{ url_for('songs') }}"> NetEase Music Box </a>
+        </div>
+    </nav>
+    <div class="col-xs-6 col-md-4 col-center-block">
+        <div class="input-group col-lg-8" style="margin-top:0px positon:relative">
+            <form class="form-inline" action='search'  method="POST">
+                <input type="text" class="form-control" name='text' placeholder="Please input your songs name">
+                <span class="input-group-btn">
+                    <button class="btn btn-info btn-search">search</button>
+                </span>
+            </form>
+        </div>
+    </div>
+    <div class="container">
+	{% for message in get_flashed_messages() %}
+	    <div class="alert alert-warning">
+		 <button type="button" class="close" data-dismiss="alert">&times;</button>
+		  {{ message }}
+  	    </div>
+  	{% endfor %}
+
+	{% block page_content %}{% endblock %}
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>歌手</th> <th> 歌手ID </th> <th> 歌曲名 </th> <th> 歌曲ID </th> <th> 播放 </th>
+            </tr>
+        </thead>
+
+        {% for song in songs %}
+            <tr>
+                <td>{{ song['singer'] }}</td>
+                <td>{{ song['singer_id'] }}</td>
+                <td>{{ song['songs_name'] }}</td>
+                <td>{{ song['songs_id'] }}</td>
+                <td>{{ song['songs_url'] }}</td>
+                <td><audio src="{{ song['play_url'] }}" preload="none" loop="loop" controls></audio></td>
+            </tr>
+        {% endfor %}
+
+    </table>
+
+</body>
+</html>
