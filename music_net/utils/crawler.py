@@ -11,6 +11,7 @@ from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 
 
 class Crawler:
@@ -24,13 +25,10 @@ class Crawler:
         self.headless = headless
         self.ignore_exception = ignore_exception
 
-        # 显式等待10秒
-        self.until = WebDriverWait(self.browser, 10).until
-        self.EC = EC
-
         if not os.path.isfile(self.driver_path):
-            raise Exception('please provide webdriver path, you can download it from: \
+            raise Exception(self.driver_path+'is not valid, please provide webdriver path, you can download it from: \
             https://chromedriver.storage.googleapis.com/2.38/chromedriver_linux64.zip')
+
         if headless:
             from selenium.webdriver.chrome.options import Options
             chrome_options = Options()
@@ -39,14 +37,21 @@ class Crawler:
             chrome_options.add_argument('--no-sandbox')
             self.browser = webdriver.Chrome(executable_path=self.driver_path, chrome_options=chrome_options)
         else:
+            print('use gui chrome!')
             self.browser = webdriver.Chrome(executable_path=self.driver_path)
+
+        # 显式等待10秒
+        self.until = WebDriverWait(self.browser, 5).until
+        self.EC = EC
+        self.By = By
+        self.TimeoutException = TimeoutException
 
     def __enter__(self):
         self.start = time()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        print('total time used: ', time()-self.start)
+        print('爬虫运行总时间: ', time()-self.start)
         self.browser.quit()
 
         # 若返回True，则压制with代码库中的异常，否则with中的异常会向上一层抛出
