@@ -52,7 +52,7 @@ class MusicCrawler(Crawler):
         ul = contentFrame.find_element_by_id('m-artist-box')
         a_tags = ul.find_elements_by_xpath('//a[@class="nm nm-icn f-thide s-fc0"]')
 
-        return [(a.text, a.get_attribute('href').split('=')[1]) for a in a_tags]
+        return [(a.text, a.get_attribute('href').split('=')[1]) for a in a_tags[:2]]
 
     def get_all_songs_by_singerID(self, singer_id):
         """
@@ -126,8 +126,9 @@ class MusicCrawler(Crawler):
         print('get songs page from url: ', url)
         contenFrame = self.get_frame(url)
 
-        songs_name = contenFrame.title
+        songs_name = contenFrame.title.split('-')[0]
 
+        contenFrame.find_element_by_id('flag_ctrl').click()
         lyric = contenFrame.find_element_by_id('lyric-content').text
 
         # 获取包含这首歌曲的歌单
@@ -151,19 +152,25 @@ class MusicCrawler(Crawler):
 
 
 if __name__ == '__main__':
+    from pymongo import MongoClient
+    #db = MongoClient('112.74.46.34').web
+
     with MusicCrawler(headless=False) as crawler:
-        # config = {
-        #           '4002':'华语女歌手',
-        #         }
-        # for key, value in config.items():
-        #     print(key, '---------------', value)
-        #     for singer_name, singer_id in crawler.get_all_singers_by_typeID(key)[:2]:
-        #         print(singer_name, singer_id)
-        #
-        #         singer_pic, songs_list, album_list, mv_list, info = crawler.get_all_songs_by_singerID(singer_id)
-        #         print('singer name: {}, singer_pic: {}, info: {}'.format(singer_name, singer_pic, info))
-        #         print(songs_list, mv_list, album_list)
-        print(crawler.get_info_by_songID(551816010))
+        config = {
+                  '1002':'华语女歌手',
+                }
+        for key, value in config.items():
+            print(key, '---------------', value)
+            for singer_name, singer_id in crawler.get_all_singers_by_typeID(key):
+                result = crawler.get_all_songs_by_singerID(singer_id)
+                print(result)
+                for song in result['songs']:
+                    res = crawler.get_info_by_songID(song)
+                    res['singer'] = singer_name
+                    print('singer: ',singer_name, ' song: ',res['name'])
+                    print(res['lyric'])
+
+
 
 
 

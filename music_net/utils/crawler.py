@@ -12,6 +12,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 
 class Crawler:
@@ -44,6 +45,7 @@ class Crawler:
         self.until = WebDriverWait(self.browser, 5).until
         self.EC = EC
         self.By = By
+        self.Keys = Keys
         self.TimeoutException = TimeoutException
 
     def __enter__(self):
