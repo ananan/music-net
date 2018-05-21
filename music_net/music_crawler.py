@@ -83,25 +83,28 @@ class MusicCrawler(Crawler):
         try:
             divs = self.until(self.EC.visibility_of_all_elements_located((self.By.XPATH,
                                                                           '//div[@class="u-cover u-cover-alb3"]')))
+        except self.TimeoutException:
+            print('No album for this singer: ', contentFrame.title)
+        # 
+        else:
             for div in divs:
                 album_cover = div.find_element_by_tag_name('img').get_attribute('src').split('?')[0]
                 album_title = div.get_attribute('title')
                 album_id = div.find_element_by_tag_name('a').get_attribute('href').split('=')[1]
                 album_list.append({'cover': album_cover, 'title': album_title, 'id': album_id})
-        except self.TimeoutException:
-            print('No album for this singer: ', contentFrame.title)
 
         # 获取歌手的相关MV, 有可能没有MV
         mv_list = []
         contentFrame.find_element_by_xpath('//ul[@id="m_tabs"]').find_elements_by_tag_name('li')[2].click()
         try:
             ps = self.until(self.EC.visibility_of_all_elements_located((self.By.XPATH, '//p[@class="dec"]')), 'no MV')
+        except self.TimeoutException:
+            print('No MV for this singer: ', contentFrame.title)
+        else:
             for p in ps:
                 mv_id = p.find_element_by_tag_name('a').get_attribute('href').split('=')[1]
                 mv_title = p.find_element_by_tag_name('a').text
                 mv_list.append({'id': mv_id, 'title': mv_title})
-        except self.TimeoutException:
-            print('No MV for this singer: ', contentFrame.title)
 
         # 获取歌手简介，有可能不存在
         contentFrame.find_element_by_xpath('//ul[@id="m_tabs"]').find_elements_by_tag_name('li')[3].click()
@@ -148,6 +151,7 @@ class MusicCrawler(Crawler):
 
 
 if __name__ == '__main__':
+<<<<<<< HEAD
     with MusicCrawler(headless=False) as crawler:
         # config = {
         #           '4002':'华语女歌手',
@@ -161,6 +165,27 @@ if __name__ == '__main__':
         #         print('singer name: {}, singer_pic: {}, info: {}'.format(singer_name, singer_pic, info))
         #         print(songs_list, mv_list, album_list)
         print(crawler.get_info_by_songID(551816010))
+=======
+    with MusicCrawler(driver_path='/home/peter/chromedriver', headless=False) as crawler:
+        config = {
+                  '4002':'华语女歌手',
+                }
+        for key, value in config.items():
+            print(key, '---------------', value)
+            for singer_name, singer_id in crawler.get_singers_by_typeID(key)[:2]:
+                print(singer_name, singer_id)
+
+                singer_pic, songs_list, album_list, mv_list, info = crawler.get_songs_by_singerID(singer_id)
+                print('singer name: {}, singer_pic: {}, info: {}'.format(singer_name, singer_pic, info))
+                print(songs_list, mv_list, album_list)
+
+            # db.singer.insert_one({'name': res['singer'],
+            #                       'url': res['url'],
+            #                       'pic': pic,
+            #                       'type': value,
+            #                       'songs': songs,
+            #                       'info': desc})
+>>>>>>> bfcfb24a609b50b93f4d81b85271c7b1e1f8e193
 
 
 
