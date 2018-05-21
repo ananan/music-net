@@ -151,7 +151,6 @@ class MusicCrawler(Crawler):
 
 
 if __name__ == '__main__':
-<<<<<<< HEAD
     with MusicCrawler(headless=False) as crawler:
         # config = {
         #           '4002':'华语女歌手',
@@ -165,27 +164,6 @@ if __name__ == '__main__':
         #         print('singer name: {}, singer_pic: {}, info: {}'.format(singer_name, singer_pic, info))
         #         print(songs_list, mv_list, album_list)
         print(crawler.get_info_by_songID(551816010))
-=======
-    with MusicCrawler(driver_path='/home/peter/chromedriver', headless=False) as crawler:
-        config = {
-                  '4002':'华语女歌手',
-                }
-        for key, value in config.items():
-            print(key, '---------------', value)
-            for singer_name, singer_id in crawler.get_singers_by_typeID(key)[:2]:
-                print(singer_name, singer_id)
-
-                singer_pic, songs_list, album_list, mv_list, info = crawler.get_songs_by_singerID(singer_id)
-                print('singer name: {}, singer_pic: {}, info: {}'.format(singer_name, singer_pic, info))
-                print(songs_list, mv_list, album_list)
-
-            # db.singer.insert_one({'name': res['singer'],
-            #                       'url': res['url'],
-            #                       'pic': pic,
-            #                       'type': value,
-            #                       'songs': songs,
-            #                       'info': desc})
->>>>>>> bfcfb24a609b50b93f4d81b85271c7b1e1f8e193
 
 
 
