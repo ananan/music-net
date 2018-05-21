@@ -6,6 +6,7 @@
 # @File    : config.py
 
 import os
+import subprocess
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 

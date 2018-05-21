@@ -53,8 +53,7 @@ class Crawler:
     def __exit__(self, exc_type, exc_val, exc_tb):
         print('爬虫运行总时间: ', time()-self.start)
         self.browser.quit()
-
-        # 若返回True，则压制with代码库中的异常，否则with中的异常会向上一层抛出
+        # 若返回True，则压制with代码库中的异常，否则with中的异常会向上一层抛出,默认设置为False
         return self.ignore_exception
 
 
