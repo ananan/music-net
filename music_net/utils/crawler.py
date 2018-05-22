@@ -21,7 +21,7 @@ class Crawler:
         1. 使用上下文管理协议控制资源的释放
         2. 运行结束后输出爬虫运行的总时间
     """
-    def __init__(self, driver_path, headless=False, ignore_exception=False):
+    def __init__(self, driver_path='/usr/local/bin/chromedriver', headless=False, ignore_exception=False):
         self.driver_path = driver_path
         self.headless = headless
         self.ignore_exception = ignore_exception
@@ -36,12 +36,13 @@ class Crawler:
             chrome_options.add_argument('--headless')
             chrome_options.add_argument('--disable-gpu')
             chrome_options.add_argument('--no-sandbox')
+            print('The Chrome is running at Headless Mode !')
             self.browser = webdriver.Chrome(executable_path=self.driver_path, chrome_options=chrome_options)
         else:
-            print('use gui chrome!')
+            print('The Chrome is running at GUI Mode !')
             self.browser = webdriver.Chrome(executable_path=self.driver_path)
 
-        # 显式等待10秒
+        # 显式等待5秒
         self.until = WebDriverWait(self.browser, 5).until
         self.EC = EC
         self.By = By

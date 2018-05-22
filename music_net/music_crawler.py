@@ -128,7 +128,8 @@ class MusicCrawler(Crawler):
 
         songs_name = contenFrame.title.split('-')[0]
 
-        contenFrame.find_element_by_id('flag_ctrl').click()
+        # 执行js模拟点击展开全部歌词，直接对tag元素执行click会报错
+        contenFrame.execute_script("document.getElementById('flag_ctrl').click()")
         lyric = contenFrame.find_element_by_id('lyric-content').text
 
         # 获取包含这首歌曲的歌单
@@ -152,9 +153,6 @@ class MusicCrawler(Crawler):
 
 
 if __name__ == '__main__':
-    from pymongo import MongoClient
-    #db = MongoClient('112.74.46.34').web
-
     with MusicCrawler(headless=False) as crawler:
         config = {
                   '1002':'华语女歌手',
