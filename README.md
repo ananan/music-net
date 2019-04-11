@@ -1,7 +1,7 @@
 ### Music-net base on Flask
 This is a Flask Demo 
 
-![music]('static/img/music.png')
+![music](static/img/music.png)
 
 
 ### Usage
