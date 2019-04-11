@@ -5,7 +5,7 @@
 # @Contact : 13yhyang1@gmail.com
 # @File    : music_crawler.py
 
-from music_net.utils.crawler import Crawler, try_again
+from utils.crawler import Crawler, try_again
 
 
 class MusicCrawler(Crawler):
@@ -153,7 +153,7 @@ class MusicCrawler(Crawler):
 
 
 if __name__ == '__main__':
-    with MusicCrawler(headless=False) as crawler:
+    with MusicCrawler(headless=True) as crawler:
         config = {
                   '1002':'华语女歌手',
                 }

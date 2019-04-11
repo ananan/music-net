@@ -6,16 +6,15 @@ import random
 
 app = Flask(__name__)
 app.secret_key = 'peter'
-app.config['SESSION_TYPE'] = 'redis'
+app.config['SESSION_TYPE'] = 'redis' # without setting session flash will not work !
 r = redis.Redis()
 
 SONGS = eval(r.get('songs'))
-base_url = 'http://music.163.com/song/media/outer/url?id='
 
 
 @app.route('/')
 def hello_world():
-    return 'hello peter'
+    return 'hello world'
 
 
 @app.route('/songs', methods=['POST', 'GET'])
@@ -24,7 +23,7 @@ def songs():
     return render_template('index.html', songs=songs_list)
 
 
-@app.route('/search', methods=['POST'])
+@app.route('/search', methods=['POST', 'GET'])
 def search():
     text = request.form.get('text')
     songs_list = []
@@ -38,4 +37,4 @@ def search():
     
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=8888, debug=True)
